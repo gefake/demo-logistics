@@ -1,0 +1,22 @@
+extends _base
+
+block content
+    section.section.hero.is-fullheight(data-theme="light")
+        .hero-body
+            .container
+                .columns.is-centered
+                    .column.is-half
+                        .box
+                            if error
+                                h1.is-size-4.has-text-centered(class=`has-text-${type}`) Ошибка #{error}
+                                //- if btext
+                                //- 	p #{btext}
+                            .field
+                                p.is-size-5.has-text-centered.has-text-dark #{text}
+                            .columns.is-centered
+                                .column.is-one-quarter
+                                    .field
+                                        if btext
+                                            a.button.is-fullwidth.is-outlined(class=`is-${type}` href=back) #{btext}
+                                        else
+                                            a.button.is-fullwidth.is-outlined(class=`is-${type}` href=back) Вернуться назад

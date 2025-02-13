@@ -1,0 +1,13 @@
+POST 127.0.0.1:8080/api/product
+Content-Type: application/json
+
+{
+  "name": "New Product2",
+  "price": 20.99,
+  "description": "asfdasfasf",
+  "quantity": 100,
+  "supplier_id": 1,
+  "unit": "шт. ",
+  "category": "тест",
+  "warehouse_id": 1
+}

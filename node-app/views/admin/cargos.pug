@@ -1,0 +1,53 @@
+extends ../_base
+
+block content
+    include ../base/navbar
+    include ../base/navbar2
+    include ../base/banner
+    script(src="https://mapgl.2gis.com/api/js/v1")
+    section.section.hero.is-fullheight(data-theme="light")
+        .container.is-fluid
+            .columns
+                .column
+                    .box
+                        table.table.is-fullwidth.is-hoverable
+                            thead
+                                tr
+                                    th Название
+                                    th Описание
+                                    th Вес
+                                    th Статус
+                                    th Действия
+                            tbody
+                                each cargo in cargos
+                                    tr
+                                        td #{cargo.name}
+                                        td #{cargo.description}
+                                        td #{cargo.weight}
+                                        td #{cargo.status}
+                                        td
+                                            form(action=`/admin/cargos/delete/${cargo.id}` method="POST")
+                                                button.button.is-small.is-success.has-text-white(type="submit") Удалить
+                .column.is-one-third
+                    .box
+                        .notification.has-text-centered
+                            h1.title.mb-2 Новый груз
+                            h2.subtitle.mb-5 Заполните информацию и добавьте новый груз
+                            .control
+                                form(action=`/admin/cargos/new` method="POST")
+                                    .field
+                                        select.select.is-fullwidth(name="order_id")
+                                            each order in orders
+                                                option.option(value=order.id) Заказ №#{order.id}
+                                    .field
+                                        input.input(name="name" placeholder="Название")
+                                    .field
+                                        input.input(name="description" step="0.01" placeholder="Описание")
+                                    .field
+                                        input.input(name="status" placeholder="Статус")
+                                    .field
+                                        input.input(name="weight" type="number" placeholder="Вес в килограммах")
+                                    .field
+                                        button.button.is-success.has-text-white.is-fullwidth(type="submit") Добавить
+
+

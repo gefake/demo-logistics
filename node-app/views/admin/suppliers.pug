@@ -1,0 +1,53 @@
+extends ../_base
+
+block content
+    include ../base/navbar
+    include ../base/navbar2
+    include ../base/banner
+    script(src="https://mapgl.2gis.com/api/js/v1")
+    section.section.hero.is-fullheight(data-theme="light")
+        .container.is-fluid
+            .columns
+                .column
+                    .box
+                        table.table.is-fullwidth.is-hoverable
+                            thead
+                                tr
+                                    th Поставщик
+                                    th Номер телефона
+                                    th Электронная почта
+                                    th Товары
+                                    th Действия
+                            tbody
+                                each supplier in suppliers
+                                    tr
+                                        td
+                                            p #{supplier.name}
+                                        td
+                                            a(href='/admin/order') #{supplier.contact}
+                                        td #{supplier.email}
+                                        td
+                                            a.is-fullwidth.button.is-small.is-success.has-text-white(href=`supplier/${supplier.id}/products`) Редактировать
+                                            .field
+                                            .tags
+                                                each product in supplier.products
+                                                    tag.tag #{product.name}
+                                        td
+                                            form(action=`/admin/suppliers-remove/${supplier.id}` method="POST")
+                                                button(type="submit").button.is-small.is-fullwidth.is-warning Удалить
+                .column.is-one-third
+                    .box
+                        .notification.has-text-centered
+                            h1.title.mb-2 Новый поставщик
+                            h2.subtitle.mb-5 Заполните информацию и добавьте нового поставщика
+                            .control
+                                form(action="/admin/suppliers-add" method="POST")
+                                    .field
+                                        input.input(name="name" placeholder="Название")
+                                    .field
+                                        input.input(name="contact" type="number" placeholder="Номер телефона")
+                                    .field
+                                        input.input(name="email" type="email" placeholder="Email")
+                                    .field
+                                        button.button.is-success.has-text-white.is-fullwidth(type="submit") Добавить
+

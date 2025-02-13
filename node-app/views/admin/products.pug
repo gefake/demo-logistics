@@ -1,0 +1,60 @@
+extends ../_base
+
+block content
+    include ../base/navbar
+    include ../base/navbar2
+    include ../base/banner
+    script(src="https://mapgl.2gis.com/api/js/v1")
+    section.section.hero.is-fullheight(data-theme="light")
+        .container.is-fluid
+            .columns
+                .column
+                    .box
+                        table.table.is-fullwidth.is-hoverable
+                            thead
+                                tr
+                                    th Продукт
+                                    th Цена
+                                    th Количество
+                                    th Действия
+                            tbody
+                                each product in suppliers.products
+                                    tr
+                                        td #{product.name}
+                                        td #{product.price}
+                                        td #{product.quantity}
+                                        td
+                                            form(action=`/admin/supplier/${suppliers.id}/product-remove/${product.id}` method="POST")
+                                                button.button.is-small.is-success.has-text-white(type="submit") Удалить
+                .column.is-one-third
+                    .box
+                        .notification.has-text-centered
+                            h1.title.mb-2 Новый продукт
+                            h2.subtitle.mb-5 Заполните информацию и добавьте новый продукт
+                            .control
+                                form(action=`/admin/supplier/${suppliers.id}/product-add` method="POST")
+                                    .field
+                                        input.input(name="name" placeholder="Название")
+                                    .field
+                                        input.input(name="description" placeholder="Описание")
+                                    .field
+                                        input.input(name="category" placeholder="Категория")
+                                    .field
+                                        select.select.is-fullwidth(name="unit")
+                                            option шт.
+                                            option т.
+                                            option м.
+                                            option кг.
+                                            option площадь
+                                            option куб
+                                    .field
+                                        select.select.is-fullwidth(name="warehouse_id")
+                                            each warehouse in warehouses
+                                                option.option(value=warehouse.id) Склад №#{warehouse.id} (#{warehouse.address})
+                                    .field
+                                        input.input(name="price" step="0.01" type="number" placeholder="Цена")
+                                    .field
+                                        input.input(name="quantity" type="number" placeholder="Количество")
+                                    .field
+                                        button.button.is-success.has-text-white.is-fullwidth(type="submit") Добавить
+

@@ -1,0 +1,10 @@
+POST 127.0.0.1:8080/auth/register/
+
+{
+  "email": "worf1337@gmail.com",
+  "firstname": "fname_test",
+  "lastname": "lname_test",
+  "password": "test",
+  "phone": "+79081159065",
+  "username": "user"
+}

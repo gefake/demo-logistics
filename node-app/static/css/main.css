@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+
+.play-regular {
+    font-family: "Play", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.play-bold {
+    font-family: "Play", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Left Side */
+
+#service_image {
+    /*background-image: url('/static/images/bg.png');*/
+    background-image: url("https://www.develug.ru/storage/app/media/news/212/images/f97a381cb0fb5a026b743b5e62067fb3.jpg");
+    background-repeat: no-repeat;
+    background-position: center 70%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 50vh;
+    max-height: 50vh;
+}
+
+#main_section_image {
+    /*background-image: url('/static/images/bg.png');*/
+    background-image: url("https://catherineasquithgallery.com/uploads/posts/2021-02/1613264843_59-p-sinii-fon-soti-68.png");
+    background-repeat: no-repeat;
+    background-position: center 70%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#main_section {
+    /*background-image: url('/static/images/bg.png');*/
+    background-image: url("https://catherineasquithgallery.com/uploads/posts/2021-02/1613264843_59-p-sinii-fon-soti-68.png");
+    background-repeat: no-repeat;
+    background-position: center 70%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 40vh;
+    max-height: 40vh;
+}
+
+#left_reg {
+    /*background-image: url('/static/images/bg.png');*/
+    background-image: url("https://kalix.club/uploads/posts/2022-12/1671709386_kalix-club-p-fon-dlya-prezentatsii-logistika-krasivo-1.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+/* ---- particles.js container ---- */
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 40vh;
+    background-color: #82b69a;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+body, html {
+    background: #eeeeee;
+    background-size: 400% 400%;
+}

@@ -1,0 +1,31 @@
+extends ../_base.pug
+
+block content
+    include ../base/navbar.pug
+    section(class='section hero is-fullheight' data-theme="light")
+        .hero-body.mb-6
+            .container
+                .columns.is-centered.is-multiline
+                    .box.is-radiusless
+                        form(action='/user/login' method='POST')
+                            .field
+                                .field
+                                .control.has-icons-left
+                                    input.input.is-medium.is-radiusless(type='text' placeholder='Имя пользователя' name='username' required)
+                                    span.icon.is-small.is-left
+                                        .fas.fa-user
+                                .field
+                                .control.has-icons-left
+                                    input.input.is-medium.is-radiusless(type='password' placeholder='Пароль' name='password' required)
+                                    span.icon.is-small.is-left
+                                        .fas.fa-lock
+                                .field
+                                .control
+                                    button.button.is-fullwidth.is-medium.is-link.is-radiusless(type='submit')
+                                        span.icon.is-medium
+                                            i.fas.fa-sign-in-alt
+                                        span Войти
+                                .field
+                                .control
+                                p.has-text-centered.is-size-7 Ещё не зарегистрированы?
+                                    a(href='/user/reg').has-text-centered.is-size-7  Регистрация

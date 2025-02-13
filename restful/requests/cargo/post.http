@@ -1,0 +1,10 @@
+POST 127.0.0.1:8080/api/cargo
+
+{
+  "client_id": 1,
+  "description": "tesT_description",
+  "name": "Заказ для меня нахуй",
+  "order_id": 5,
+  "status": "string",
+  "weight": 25565
+}

@@ -1,0 +1,96 @@
+extends _base.pug
+
+block content
+    include base/navbar.pug
+    section.section.hero.is-fullheight(data-theme="light")
+        .container
+            h1.title.has-text-centered.mt-6 Оформление заказа
+            .columns.is-centered.mt-3
+                .column.is-full#cart-items
+                    -sum = 0
+                    each item in items
+                        -sum = sum + (item.price * item.quantity)
+                        .box
+                            nav.level
+                                .level-item.level-left.ml-4
+                                    p.title.is-5.play-regular #{item.name} - #{item.price} руб.
+                                .level-item.level-right
+                                    .buttons
+                                        button.button.is-danger
+                                            span.icon.is-small
+                                                i.fas.fa-minus
+                                        button.button
+                                            span #{item.quantity || 1}
+                                        button.button.is-success
+                                            span.icon.is-small
+                                                i.fas.fa-plus
+                                        button.button(id='remove-from-cart', data-product=item)
+                                            span.icon.is-small
+                                                i.fas.fa-times
+                                            span Удалить из корзины
+                    .box
+                        .notification
+                            h1.title.is-5.play-regular Введите свой адрес
+                            .field
+                                input.input#address(placeholder="Полный адрес доставки" name="address" type="text")
+                        .level
+                            .level-item.level-left
+                                p.ml-4 Итого: #{sum} рублей
+                            .level-item.level-right
+                                form(action="/order/products" method="POST")
+                                    button.button.is-primary(type="submit") Оформить заказ
+    script.
+        $(document).ready(() => {
+            // Обработка нажатия кнопки "Добавить в корзину"
+            $('#add-to-cart').click(function () {
+                let product = this.getAttribute("data-product")
+
+                console.log(product)
+
+                // Отправка AJAX-запроса на сервер
+                $.ajax({
+                    url: '/cart/add',
+                    type: 'POST',
+                    data: {product: product},
+                    success: (response) => {
+                        // Обновление корзины на клиенте
+                        if (response.success) {
+                            console.log("Success")
+                            // Очищаем список товаров в корзине
+                            $('#cart-items').empty();
+                            // Добавляем товары в корзину на странице
+                            response.cartItems.forEach(item => {
+                                $('#cart-items').append(`<li>${item.name}</li>`);
+                            });
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '#remove-from-cart', function () {
+                const product = $(this).data('product');
+
+                $.ajax({
+                    url: '/cart/remove',
+                    type: 'POST',
+                    data: {product: product},
+                    success: (response) => {
+                        if (response.success) {
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        });
+
+        // Замените на свой API-ключ
+        var token = "cf13fe0612ef6773d58986c308f2628284e3d275";
+        var type = "ADDRESS";
+        var $address = $("#address");
+
+        $address.suggestions({
+            token: token,
+            type: type,
+            hint: false,
+            geoLocation: false
+        });

@@ -1,0 +1,52 @@
+doctype html
+head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible' content='ie=edge')
+    meta(name="description" content="Мы занимаемся ремонтом оргтехники, бытовой и цифровой техники. В числе наших услуг — заказные сборки ПК, диагностика, чистка и ремонт компьютерной техники. Наши мастера могут выполнять работы на дому у клиента или принимать технику в офисе для ремонта")
+    meta(name="theme-color" content="#f59842")
+    meta(name="wot-verification" content="d5277a879d53bfc2ba26b09039c7b3df")
+    title #{title || "СтройМастер"}
+    script(src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js")
+    script(src='https://code.jquery.com/jquery-3.6.0.min.js')
+    script(src="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js")
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js')
+    //script(src='/static/js/backend.js' type='text/javascript')
+    link(rel='icon' href='/static/images/icon.png')
+    link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous")
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')
+    link(rel='stylesheet', href='/static/css/fancy.css')
+    link(rel='stylesheet', href='/static/css/flickity.css')
+    link(href="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/css/suggestions.min.css" rel="stylesheet")
+    link(rel='stylesheet', href='/static/css/admin.css')
+    link(rel='stylesheet', href='/static/css/main.css')
+    link(rel='stylesheet', href='/static/css/bulma.min.css')
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css')
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet")
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet")
+    //- link(rel="icon" href="/static/images/favicon.ico")
+html(data-theme='dark')
+    block content
+style.
+    .is-highlevel {
+        color: #ffffff;
+        background-color: #fe8a1e;
+    }
+
+    .is-highlevel-text {
+        color: #fe8a1e;
+    }
+
+    .is-highlevel-input {
+        background-color: rgba(112, 67, 24, 0.9);
+        border: 1px solid rgb(254, 138, 30, 1);
+        color: #ffffff;
+    }
+
+    .is-highlevel-input::placeholder {
+        color: #c8c3ab
+    }

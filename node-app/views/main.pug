@@ -1,0 +1,71 @@
+extends _base.pug
+
+block content
+    include base/navbar.pug
+    .main-carousel(data-flickity='{ "fullscreen": true, "fade": true, "lazyLoad": 1, "autoPlay": 3500 }')
+        .carousel-cell
+            img.carousel-img(data-flickity-lazyload="https://www.develug.ru/storage/app/media/news/212/images/f97a381cb0fb5a026b743b5e62067fb3.jpg")
+        .carousel-cell
+            img.carousel-img(data-flickity-lazyload="https://www.develug.ru/storage/app/media/news/212/images/0a81c798d0df5111023e5c8f21ec6053.jpg")
+        .carousel-cell
+            img.carousel-img(data-flickity-lazyload="https://avatars.mds.yandex.net/get-altay/1579247/2a00000174d736afeb8f19c12ffc6194d25b/XXL")
+        .carousel-cell
+            img.carousel-img(data-flickity-lazyload="https://www.develug.ru/storage/app/media/news/212/images/e220ceb51e1eef8e10554d621d4f43f5.jpg")
+    section.section.hero(data-theme="light")
+        .container
+            h1.title.is-1.has-text-centered.play-regular СтройМастер
+            h1.subtitle.mt-3.has-text-centered.play-regular В нашем каталоге Вы найдете широкий ассортимент стройматериалов от ведущих производителей. От кирпича и бетона до кровельных материалов и отделочных материалов - у нас есть все, что нужно для Вашего строительства!
+    section.section.hero.is-fullheight(data-theme="light")
+        .container.has-text-white
+            //.columns.is-centered.has-text-centered.mb-6.mt-6
+            //    .column
+            //        .notification.is-dark(style='outline: 1px solid')
+            //            h1.title.is-4 Большой каталог товаров
+            //            h2.subtitle.mt-4 В нашем каталоге Вы найдете широкий ассортимент стройматериалов от ведущих производителей. От кирпича и бетона до кровельных материалов и отделочных материалов - у нас есть все, что нужно для Вашего строительства!
+            //    .column
+            //        .notification.is-dark(style='outline: 1px solid')
+            //            h1.title.is-4 Поддержка клиентов 24/7
+            //            h2.subtitle.mt-4 Наши менеджеры доступны круглосуточно, чтобы ответить на все Ваши вопросы и помочь с выбором материалов. Мы гарантируем профессиональную консультацию и оперативную поддержку.
+            //    .column
+            //        .notification.is-dark(style='outline: 1px solid')
+            //            h1.title.is-4 Гарантия на все товары
+            //            h2.subtitle.mt-4 Мы заботимся о Вашем спокойствии. Все товары в нашем ассортименте сертифицированы и имеют гарантию качества. Вы можете быть уверены, что получите надежные и долговечные материалы для своего строительства.
+            h1.title.has-text-centered Строительные материалы оптом
+            .columns.is-centered.is-multiline.mt-3
+                each cat in cats
+                    .column.is-one-third
+                        .box
+                            p.title.is-5.has-text-centered #{cat.Category}
+                                each product in cat.Products
+                                    .field
+                                        .notification
+                                            p #{product.name}
+                                            p #{product.price} рублей/#{product.unit}
+                                            p.has-text-success (#{product.quantity} в наличии)
+                                            a.button.is-6.add-to-cart.mt-2.is-outlined.is-success.is-fullwidth(data-product=product)
+                                                span.icon
+                                                    .fas.fa-plus
+                                                span В корзину
+    script.
+        $(document).ready(() => {
+            // Обработка нажатия кнопки "Добавить в корзину"
+            $('.add-to-cart').click(function () {
+                // Получение данных товара (id, имя) из HTML,
+                //  например, с атрибутов элемента <li>
+                const product = this.getAttribute("data-product")
+
+                // Отправка AJAX-запроса на сервер
+                $.ajax({
+                    url: '/cart/add',
+                    type: 'POST',
+                    data: {product: product},
+                    success: (response) => {
+                        // Обновление корзины на клиенте
+                        if (response.success) {
+                            console.log("Success")
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        });

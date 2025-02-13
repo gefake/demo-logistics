@@ -1,0 +1,166 @@
+extends ../_base
+
+block content
+    include ../base/navbar
+    include ../base/navbar2
+    include ../base/banner
+    script(src="https://mapgl.2gis.com/api/js/v1")
+    section.section.hero.is-fullheight(data-theme="light")
+        .container.is-fluid
+            .columns
+                .column
+                    .box
+                        table.table.is-fullwidth.is-hoverable
+                            thead
+                                tr
+                                    th Адрес доставки
+                                    th Название
+                                    th Количество
+                                    th Товары
+                                    th Статус заказа
+                                    th Дата создания
+                                    th Доставки
+                                    th Действия
+                            tbody
+                                each order in orders
+                                    tr
+                                        td #{order.address}
+                                        td
+                                            a(href="/admin/order") Заказ №#{order.id} от @#{order.Client.username}
+                                        td #{order.amount || 1}
+                                        td
+                                            .tags
+                                                each item in order.OrderItems
+                                                    tag.tag.is-dark #{item.product_name.name} (x#{item.quantity})
+                                        td #{order.status}
+                                        td #{order.order_date}
+                                        td
+                                            each item in order.OrderItems
+                                                p #{item.id}
+                                        td
+                                            form(action=`/order/delete/${order.id}` method="POST")
+                                                button.is-small.button.is-warning(type="sumbit") Удалить
+                //.column.is-one-third
+                //    .box
+                //        .notification.has-text-centered
+                //            h1.title.mb-2 Новая доставка
+                //            h2.subtitle.mb-5 Форма для добавления новой доставки товара
+                //            .control
+                //                form(action="/admin/delievery-add" method="POST")
+                //                    .field
+                //                        input.input(name="name" placeholder="Название")
+                //                    .field
+                //                        input.input(name="contact" type="number" placeholder="Номер телефона")
+                //                    .field
+                //                        input.input(name="email" type="email" placeholder="Email")
+                //                    .field
+                //                        button.button.is-success.has-text-white.is-fullwidth(type="submit") Добавить
+            .box.mt-5
+                #map
+    style.
+        #map {
+            margin: 0;
+            width: 100%;
+            height: 500px;
+            font-family: sans-serif;
+            overflow: hidden;
+        }
+
+        img.center {
+            display: block;
+            margin: 0 auto;
+        }
+    script.
+        const map = new mapgl.Map('map', {
+            center: [55.31878, 25.23584],
+            zoom: 11,
+            key: 'f585c2ac-6033-4aa6-9a16-5b7348270899', // API key can be used on 2gis.github.io/mapgl-examples only!
+        });
+        window.addEventListener('resize', () => map.invalidateSize());
+
+        map.on('styleload', () => {
+            map.addLayer({
+                id: 'my-polygon',
+                type: 'polygon',
+                filter: [
+                    'all',
+                    ['match', ['sourceAttr', 'type'], ['my-source'], true, false],
+                    ['match', ['get', 'geotype'], ['polygon'], true, false],
+                ],
+                style: {
+                    color: '#ff000088',
+                },
+            });
+
+            map.addLayer({
+                id: 'my-point',
+                type: 'point',
+                filter: [
+                    'all',
+                    ['match', ['sourceAttr', 'type'], ['my-source'], true, false],
+                    ['match', ['get', 'geotype'], ['point'], true, false],
+                ],
+                style: {
+                    iconImage: 'ent_i',
+                    textFont: 'Noto_Sans',
+                    textField: ['get', 'text'],
+                    allowOverlap: true,
+                },
+            });
+        });
+
+        const startLat = 25.27837875347788;
+        const endLat = 25.186451538414246;
+
+        const source = new mapgl.GeoJsonSource(map, {
+            attributes: {
+                type: 'my-source',
+            },
+            data: createGeoJson(startLat),
+        });
+
+        let currentIteration = 0;
+        const iterations = 20;
+
+        function updatePosition() {
+            currentIteration = (currentIteration + 1) % iterations;
+
+            const t = currentIteration / iterations;
+            const lat = startLat + (endLat - startLat) * t;
+
+            source.setData(createGeoJson(lat));
+        }
+
+        setInterval(updatePosition, 2000);
+
+        function createGeoJson(latitude) {
+            return {
+                type: 'FeatureCollection',
+                features: [
+                    {
+                        type: 'Feature',
+                        properties: {
+                            geotype: 'point',
+                            text: 'Static point ' + Math.random().toFixed(3),
+                        },
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [55.28332467842971, 25.32837875347788],
+                        },
+                    }
+                ],
+            };
+        }
+
+        function createPolygon(lng, lat) {
+            const c = [lng, lat];
+            return [
+                [
+                    [c[0] - 0.05, c[1]],
+                    [c[0], c[1] - 0.05],
+                    [c[0] + 0.05, c[1]],
+                    [c[0], c[1] + 0.05],
+                    [c[0] - 0.05, c[1]],
+                ],
+            ];
+        }

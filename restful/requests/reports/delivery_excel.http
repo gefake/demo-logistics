@@ -1,0 +1,6 @@
+GET 127.0.0.1:8080/api/reports/delivery/excel
+
+{
+    "date_start": "2021-01-01T00:00:00Z",
+    "date_end": "2024-06-30T00:00:00Z"
+}

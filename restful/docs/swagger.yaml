@@ -1,0 +1,2223 @@
+definitions:
+  database.Cargo:
+    properties:
+      cargoProducts:
+        items:
+          $ref: '#/definitions/database.CargoProduct'
+        type: array
+      client:
+        $ref: '#/definitions/database.User'
+      client_id:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      order:
+        $ref: '#/definitions/database.Order'
+      order_id:
+        type: integer
+      status:
+        type: string
+      weight:
+        type: number
+    required:
+    - client_id
+    - description
+    - name
+    - order_id
+    - status
+    - weight
+    type: object
+  database.CargoProduct:
+    properties:
+      cargoID:
+        type: integer
+      productID:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  database.DeliveryRoute:
+    properties:
+      arrival_date:
+        type: string
+      cargo:
+        $ref: '#/definitions/database.Cargo'
+      cargo_id:
+        type: integer
+      departure_date:
+        type: string
+      driver:
+        $ref: '#/definitions/database.User'
+      driver_id:
+        type: integer
+      end_point:
+        $ref: '#/definitions/database.Point'
+      id:
+        type: integer
+      start_point:
+        $ref: '#/definitions/database.Point'
+      status:
+        type: string
+    required:
+    - arrival_date
+    - cargo_id
+    - departure_date
+    - driver_id
+    - end_point
+    - start_point
+    - status
+    type: object
+  database.DeliverySchedule:
+    properties:
+      date:
+        type: string
+      id:
+        type: integer
+      products:
+        items:
+          $ref: '#/definitions/database.DeliveryScheduleProduct'
+        type: array
+      warehouse:
+        $ref: '#/definitions/database.Warehouse'
+      warehouse_id:
+        type: integer
+    required:
+    - date
+    - products
+    - warehouse_id
+    type: object
+  database.DeliveryScheduleProduct:
+    properties:
+      delivery_schedule:
+        $ref: '#/definitions/database.DeliverySchedule'
+      delivery_schedule_id:
+        type: integer
+      id:
+        type: integer
+      product:
+        $ref: '#/definitions/database.Product'
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    required:
+    - product_id
+    - quantity
+    type: object
+  database.Order:
+    properties:
+      address:
+        type: string
+      client:
+        $ref: '#/definitions/database.User'
+      client_id:
+        type: integer
+      id:
+        type: integer
+      order_date:
+        type: string
+      orderItems:
+        items:
+          $ref: '#/definitions/database.OrderItem'
+        type: array
+      status:
+        type: string
+    required:
+    - address
+    - client_id
+    - order_date
+    - status
+    type: object
+  database.OrderItem:
+    properties:
+      id:
+        type: integer
+      order:
+        $ref: '#/definitions/database.Order'
+      order_id:
+        type: integer
+      product_id:
+        type: integer
+      product_name:
+        $ref: '#/definitions/database.Product'
+      quantity:
+        type: integer
+    required:
+    - order_id
+    - product_id
+    - quantity
+    type: object
+  database.Point:
+    properties:
+      lat:
+        type: number
+      lon:
+        type: number
+    type: object
+  database.Position:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  database.Product:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      quantity:
+        type: integer
+      supplier:
+        $ref: '#/definitions/database.Supplier'
+      supplier_id:
+        type: integer
+      unit:
+        type: string
+      warehouse:
+        $ref: '#/definitions/database.Warehouse'
+      warehouse_id:
+        type: integer
+    required:
+    - category
+    - description
+    - name
+    - price
+    - quantity
+    - supplier_id
+    - unit
+    - warehouse_id
+    type: object
+  database.Role:
+    properties:
+      id:
+        type: integer
+      is_admin:
+        type: boolean
+      name:
+        type: string
+    type: object
+  database.Supplier:
+    properties:
+      contact:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/database.Product'
+        type: array
+    required:
+    - contact
+    - email
+    - name
+    type: object
+  database.User:
+    properties:
+      email:
+        type: string
+      firstname:
+        type: string
+      id:
+        type: integer
+      lastname:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      position:
+        $ref: '#/definitions/database.Position'
+      position_id:
+        type: integer
+      role:
+        $ref: '#/definitions/database.Role'
+      role_id:
+        type: integer
+      username:
+        type: string
+    required:
+    - email
+    - firstname
+    - lastname
+    - password
+    - phone
+    - username
+    type: object
+  database.Warehouse:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      position:
+        $ref: '#/definitions/database.Point'
+      products:
+        items:
+          $ref: '#/definitions/database.Product'
+        type: array
+    required:
+    - address
+    - position
+    type: object
+  handler.Address:
+    properties:
+      area:
+        description: Район в регионе
+        type: string
+      area_fias_id:
+        description: Код ФИАС района в регионе
+        type: string
+      area_kladr_id:
+        description: Код КЛАДР района в регионе
+        type: string
+      area_type:
+        description: Тип района в регионе (сокращенный)
+        type: string
+      area_type_full:
+        description: Тип района в регионе
+        type: string
+      area_with_type:
+        description: Район в регионе с типом
+        type: string
+      beltway_distance:
+        description: Расстояние от кольцевой в км.
+        type: string
+      beltway_hit:
+        description: Внутри кольцевой?
+        type: string
+      block:
+        description: Корпус/строение
+        type: string
+      block_type:
+        description: Тип корпуса/строения (сокращенный)
+        type: string
+      block_type_full:
+        description: Тип корпуса/строения
+        type: string
+      capital_marker:
+        description: Статус центра
+        type: string
+      city:
+        description: Город
+        type: string
+      city_area:
+        description: Административный округ (только для Москвы)
+        type: string
+      city_district:
+        description: Район города
+        type: string
+      city_district_fias_id:
+        description: Код ФИАС района города (заполняется, только если район есть в
+          ФИАС)
+        type: string
+      city_district_kladr_id:
+        description: Код КЛАДР района города (не заполняется)
+        type: string
+      city_district_type:
+        description: Тип района города (сокращенный)
+        type: string
+      city_district_type_full:
+        description: Тип района города
+        type: string
+      city_district_with_type:
+        description: Район города с типом
+        type: string
+      city_fias_id:
+        description: Код ФИАС города
+        type: string
+      city_kladr_id:
+        description: Код КЛАДР города
+        type: string
+      city_type:
+        description: Тип города (сокращенный)
+        type: string
+      city_type_full:
+        description: Тип города
+        type: string
+      city_with_type:
+        description: Город с типом
+        type: string
+      country:
+        description: Страна
+        type: string
+      country_iso_code:
+        description: ISO-код страны
+        type: string
+      entrance:
+        description: Подъезд
+        type: string
+      federal_district:
+        description: Федеральный округ
+        type: string
+      fias_actuality_state:
+        description: Признак актуальности адреса в ФИАС
+        type: string
+      fias_code:
+        description: Иерархический код адреса в ФИАС (СС+РРР+ГГГ+ППП+СССС+УУУУ+ДДДД)
+        type: string
+      fias_id:
+        description: Код ФИАС
+        type: string
+      fias_level:
+        description: Уровень детализации, до которого адрес найден в ФИАС
+        type: string
+      flat:
+        description: Квартира
+        type: string
+      flat_area:
+        description: Площадь квартиры
+        type: string
+      flat_cadnum:
+        description: Кадастровый номер квартиры (22.4+). Заполняется в зависимости
+          от тарифа «Дадаты».
+        type: string
+      flat_fias_id:
+        description: ФИАС-код квартиры
+        type: string
+      flat_price:
+        description: Рыночная стоимость квартиры
+        type: string
+      flat_type:
+        description: Тип квартиры (сокращенный)
+        type: string
+      flat_type_full:
+        description: Тип квартиры
+        type: string
+      floor:
+        description: Этаж
+        type: string
+      geo_lat:
+        description: 'Координаты: широта'
+        type: string
+      geo_lon:
+        description: 'Координаты: долгота'
+        type: string
+      house:
+        description: Дом
+        type: string
+      house_cadnum:
+        description: Кадастровый номер дома (22.4+). Заполняется в зависимости от
+          тарифа «Дадаты».
+        type: string
+      house_fias_id:
+        description: Код ФИАС дома
+        type: string
+      house_kladr_id:
+        description: Код КЛАДР дома
+        type: string
+      house_type:
+        description: Тип дома (сокращенный)
+        type: string
+      house_type_full:
+        description: Тип дома
+        type: string
+      kladr_id:
+        description: Код КЛАДР
+        type: string
+      metro:
+        items:
+          $ref: '#/definitions/handler.Metro'
+        type: array
+      okato:
+        description: Код ОКАТО
+        type: string
+      oktmo:
+        description: Код ОКТМО
+        type: string
+      postal_box:
+        description: Абонентский ящик
+        type: string
+      postal_code:
+        description: Индекс
+        type: string
+      qc:
+        description: Код качества
+      qc_complete:
+        description: Код полноты
+      qc_geo:
+        description: QualityCodeGeoRaw для clean вызовов он int для suggest в адресе
+          банков он string поэтому в поле поставил interface{} чтобы работало и там
+          и там)\
+      qc_house:
+        description: Код проверки дома
+      region:
+        description: Регион
+        type: string
+      region_fias_id:
+        description: Код ФИАС региона
+        type: string
+      region_iso_code:
+        description: ISO-код региона
+        type: string
+      region_kladr_id:
+        description: Код КЛАДР региона
+        type: string
+      region_type:
+        description: Тип региона (сокращенный)
+        type: string
+      region_type_full:
+        description: Тип региона
+        type: string
+      region_with_type:
+        description: Регион с типом
+        type: string
+      result:
+        description: Стандартизованный адрес одной строкой
+        type: string
+      settlement:
+        description: Населенный пункт
+        type: string
+      settlement_fias_id:
+        description: Код ФИАС нас. пункта
+        type: string
+      settlement_kladr_id:
+        description: Код КЛАДР нас. пункта
+        type: string
+      settlement_type:
+        description: Тип населенного пункта (сокращенный)
+        type: string
+      settlement_type_full:
+        description: Тип населенного пункта
+        type: string
+      settlement_with_type:
+        description: Населенный пункт с типом
+        type: string
+      source:
+        description: Исходный адрес одной строкой
+        type: string
+      square_meter_price:
+        description: Рыночная стоимость м²
+        type: string
+      street:
+        description: Улица
+        type: string
+      street_fias_id:
+        description: Код ФИАС улицы
+        type: string
+      street_kladr_id:
+        description: Код КЛАДР улицы
+        type: string
+      street_type:
+        description: Тип улицы (сокращенный)
+        type: string
+      street_type_full:
+        description: Тип улицы
+        type: string
+      street_with_type:
+        description: Улица с типом
+        type: string
+      tax_office:
+        description: Код ИФНС для физических лиц
+        type: string
+      tax_office_legal:
+        description: Код ИФНС для организаций
+        type: string
+      timezone:
+        description: Часовой пояс
+        type: string
+      unparsed_parts:
+        description: Нераспознанная часть адреса. Для адреса
+        type: string
+    type: object
+  handler.Auth:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  handler.Metro:
+    properties:
+      distance:
+        type: number
+      line:
+        type: string
+      name:
+        type: string
+    type: object
+  handler.authRegResp:
+    properties:
+      id:
+        type: integer
+    type: object
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handler.successResponseAllCargos:
+    properties:
+      cargos:
+        items:
+          $ref: '#/definitions/database.Cargo'
+        type: array
+      page_count:
+        type: integer
+    type: object
+  service.DiagramData:
+    properties:
+      data:
+        items:
+          type: number
+        type: array
+      labels:
+        items:
+          type: string
+        type: array
+    type: object
+  service.DiagramReport:
+    properties:
+      date_end:
+        type: string
+      date_start:
+        type: string
+      diagram_data:
+        $ref: '#/definitions/service.DiagramData'
+    required:
+    - date_end
+    - date_start
+    type: object
+  service.TableData:
+    properties:
+      rows:
+        items:
+          items:
+            type: string
+          type: array
+        type: array
+    type: object
+  service.TableReport:
+    properties:
+      date_end:
+        type: string
+      date_start:
+        type: string
+      report_name:
+        type: string
+      table_data:
+        $ref: '#/definitions/service.TableData'
+    required:
+    - date_end
+    - date_start
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server celler server.
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /api/cargo:
+    post:
+      consumes:
+      - application/json
+      description: Create a new cargo
+      parameters:
+      - description: Cargo data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/database.Cargo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Cargo ID
+          schema:
+            type: int
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new cargo
+      tags:
+      - cargo
+  /api/cargo/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a cargo
+      parameters:
+      - description: Cargo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cargo deleted
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete a cargo
+      tags:
+      - cargo
+    get:
+      consumes:
+      - application/json
+      description: Get a cargo by ID
+      parameters:
+      - description: Cargo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.Cargo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get a cargo by ID
+      tags:
+      - cargo
+    put:
+      consumes:
+      - application/json
+      description: Update a cargo
+      parameters:
+      - description: Cargo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Cargo data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/database.Cargo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cargo updated
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update a cargo
+      tags:
+      - cargo
+  /api/cargo/user/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get all cargos by user ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/database.Cargo'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get all cargos by user ID
+      tags:
+      - cargo
+  /api/cargos:
+    get:
+      consumes:
+      - application/json
+      description: Get all cargos with pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of cargos per page
+        in: query
+        name: perPage
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.successResponseAllCargos'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get all cargos
+      tags:
+      - cargo
+  /api/delivery:
+    get:
+      consumes:
+      - application/json
+      description: Get all routes
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/database.DeliveryRoute'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get all routes
+      tags:
+      - Delivery
+    post:
+      consumes:
+      - application/json
+      description: Create a new delivery route
+      parameters:
+      - description: Delivery route
+        in: body
+        name: delivery_route
+        required: true
+        schema:
+          $ref: '#/definitions/database.DeliveryRoute'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Delivery route created
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new delivery route
+      tags:
+      - Delivery
+  /api/delivery-schedule:
+    get:
+      consumes:
+      - application/json
+      description: Get all delivery schedules
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/database.DeliverySchedule'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get all delivery schedules
+      tags:
+      - DeliverySchedule
+    post:
+      consumes:
+      - application/json
+      description: Create a new delivery schedule
+      parameters:
+      - description: DeliverySchedule object
+        in: body
+        name: delivery-schedule
+        required: true
+        schema:
+          $ref: '#/definitions/database.DeliverySchedule'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new delivery schedule
+      tags:
+      - DeliverySchedule
+  /api/delivery-schedule/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing delivery schedule
+      parameters:
+      - description: DeliverySchedule ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete an existing delivery schedule
+      tags:
+      - DeliverySchedule
+    get:
+      consumes:
+      - application/json
+      description: Get an existing delivery schedule
+      parameters:
+      - description: DeliverySchedule ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.DeliverySchedule'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get an existing delivery schedule
+      tags:
+      - DeliverySchedule
+    patch:
+      consumes:
+      - application/json
+      description: Update an existing delivery schedule
+      parameters:
+      - description: DeliverySchedule ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: DeliverySchedule object
+        in: body
+        name: delivery-schedule
+        required: true
+        schema:
+          $ref: '#/definitions/database.DeliverySchedule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update an existing delivery schedule
+      tags:
+      - DeliverySchedule
+  /api/delivery/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete delivery route
+      parameters:
+      - description: Delivery route ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delivery route deleted
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete delivery route
+      tags:
+      - Delivery
+    get:
+      consumes:
+      - application/json
+      description: Get delivery route by ID
+      parameters:
+      - description: Delivery route ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.DeliveryRoute'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get delivery route by ID
+      tags:
+      - Delivery
+    put:
+      consumes:
+      - application/json
+      description: Update delivery route
+      parameters:
+      - description: Delivery route ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Delivery route
+        in: body
+        name: delivery_route
+        required: true
+        schema:
+          $ref: '#/definitions/database.DeliveryRoute'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delivery route updated
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update delivery route
+      tags:
+      - Delivery
+  /api/geo/address:
+    post:
+      consumes:
+      - application/json
+      description: Retrieves geolocation data for a given address using the DaData
+        API.
+      parameters:
+      - description: Address
+        in: body
+        name: address
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Geolocation data retrieved
+          schema:
+            items:
+              $ref: '#/definitions/handler.Address'
+            type: array
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get geolocation data for an address
+      tags:
+      - Geolocation
+  /api/order:
+    get:
+      consumes:
+      - application/json
+      description: Get all orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/database.Order'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get all orders
+      tags:
+      - Order
+    post:
+      consumes:
+      - application/json
+      description: Create a new order
+      parameters:
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/database.Order'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Order created
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new order
+      tags:
+      - Order
+  /api/order/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order deleted
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete an order
+      tags:
+      - Order
+    get:
+      consumes:
+      - application/json
+      description: Get an order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get an order
+      tags:
+      - Order
+    put:
+      consumes:
+      - application/json
+      description: Update an order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/database.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order updated
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update an order
+      tags:
+      - Order
+  /api/order/products:
+    post:
+      consumes:
+      - application/json
+      description: Create a new order product
+      parameters:
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/database.OrderItem'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Order created
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new order product
+      tags:
+      - Order
+  /api/order/products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an order product
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order deleted
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete an order product
+      tags:
+      - Order
+  /api/position:
+    post:
+      consumes:
+      - application/json
+      description: Create a new position
+      parameters:
+      - description: Position
+        in: body
+        name: position
+        required: true
+        schema:
+          $ref: '#/definitions/database.Position'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Position created
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new position
+      tags:
+      - Position
+  /api/position/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a position
+      parameters:
+      - description: Position ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Position deleted
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete a position
+      tags:
+      - Position
+    get:
+      consumes:
+      - application/json
+      description: Get a position
+      parameters:
+      - description: Position ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.Position'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get a position
+      tags:
+      - Position
+    put:
+      consumes:
+      - application/json
+      description: Update a position
+      parameters:
+      - description: Position ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Position
+        in: body
+        name: position
+        required: true
+        schema:
+          $ref: '#/definitions/database.Position'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Position updated
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update a position
+      tags:
+      - Position
+  /api/product:
+    get:
+      consumes:
+      - application/json
+      description: Get all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products retrieved
+          schema:
+            items:
+              $ref: '#/definitions/database.Product'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get all products
+      tags:
+      - Product
+    post:
+      consumes:
+      - application/json
+      description: Create a new product
+      parameters:
+      - description: Product object
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/database.Product'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Product created
+          schema:
+            $ref: '#/definitions/database.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new product
+      tags:
+      - Product
+  /api/product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет продукт по его идентификатору
+      parameters:
+      - description: ID продукта
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product deleted
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Удалить продукт по ID
+      tags:
+      - Product
+    get:
+      consumes:
+      - application/json
+      description: Get a product by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product retrieved
+          schema:
+            $ref: '#/definitions/database.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get product by ID
+      tags:
+      - Product
+    put:
+      consumes:
+      - application/json
+      description: Update a product by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product object
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/database.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated
+          schema:
+            $ref: '#/definitions/database.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update product by ID
+      tags:
+      - Product
+  /api/product/cats:
+    get:
+      consumes:
+      - application/json
+      description: Получить все категории товаров
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Массив категорий
+          schema:
+            items:
+              type: string
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Получить все категории товаров
+      tags:
+      - Product
+  /api/reports/delivery:
+    post:
+      consumes:
+      - application/json
+      description: Get delivery report
+      parameters:
+      - description: DiagramReport object
+        in: body
+        name: diagramReport
+        required: true
+        schema:
+          $ref: '#/definitions/service.DiagramReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.DiagramReport'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get delivery report
+      tags:
+      - Reporting
+  /api/reports/delivery/excel:
+    post:
+      consumes:
+      - application/json
+      description: Get delivery report
+      parameters:
+      - description: TableReport object
+        in: body
+        name: diagramReport
+        required: true
+        schema:
+          $ref: '#/definitions/service.TableReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.TableReport'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get delivery report
+      tags:
+      - Reporting
+  /api/reports/sales:
+    post:
+      consumes:
+      - application/json
+      description: Get sales report
+      parameters:
+      - description: DiagramReport object
+        in: body
+        name: diagramReport
+        required: true
+        schema:
+          $ref: '#/definitions/service.DiagramReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.DiagramReport'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get sales report
+      tags:
+      - Reporting
+  /api/reports/sales/excel:
+    post:
+      consumes:
+      - application/json
+      description: Get sales report
+      parameters:
+      - description: TableReport object
+        in: body
+        name: diagramReport
+        required: true
+        schema:
+          $ref: '#/definitions/service.TableReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.TableReport'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get sales report
+      tags:
+      - Reporting
+  /api/role:
+    post:
+      consumes:
+      - application/json
+      description: Create a new role
+      parameters:
+      - description: Role
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/database.Role'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Role created
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new role
+      tags:
+      - Role
+  /api/role/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a role
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Role deleted
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete a role
+      tags:
+      - Role
+    get:
+      consumes:
+      - application/json
+      description: Get role by ID
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.Role'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get role by ID
+      tags:
+      - Role
+    put:
+      consumes:
+      - application/json
+      description: Update a role
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Role
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/database.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Role updated
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update a role
+      tags:
+      - Role
+  /api/supplier:
+    get:
+      consumes:
+      - application/json
+      description: Get all suppliers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Suppliers retrieved
+          schema:
+            items:
+              $ref: '#/definitions/database.Supplier'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get all suppliers
+      tags:
+      - Supplier
+    post:
+      consumes:
+      - application/json
+      description: Create a new supplier
+      parameters:
+      - description: Supplier object
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/database.Supplier'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Supplier created
+          schema:
+            $ref: '#/definitions/database.Supplier'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new supplier
+      tags:
+      - Supplier
+  /api/supplier/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a supplier by ID
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Supplier deleted
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete a supplier by ID
+      tags:
+      - Supplier
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a supplier by ID
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Supplier retrieved
+          schema:
+            $ref: '#/definitions/database.Supplier'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Retrieve a supplier by ID
+      tags:
+      - Supplier
+    put:
+      consumes:
+      - application/json
+      description: Update a supplier
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Supplier object
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/database.Supplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Supplier updated
+          schema:
+            $ref: '#/definitions/database.Supplier'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update a supplier
+      tags:
+      - Supplier
+  /api/warehouse:
+    get:
+      consumes:
+      - application/json
+      description: Get all warehouses
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/database.Warehouse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get all warehouses
+      tags:
+      - Warehouse
+    post:
+      consumes:
+      - application/json
+      description: Create a new warehouse
+      parameters:
+      - description: Warehouse object
+        in: body
+        name: warehouse
+        required: true
+        schema:
+          $ref: '#/definitions/database.Warehouse'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Warehouse ID
+          schema:
+            type: int
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create a new warehouse
+      tags:
+      - Warehouse
+  /api/warehouse/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing warehouse
+      parameters:
+      - description: Warehouse ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete an existing warehouse
+      tags:
+      - Warehouse
+    get:
+      consumes:
+      - application/json
+      description: Get an existing warehouse
+      parameters:
+      - description: Warehouse ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.Warehouse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Get an existing warehouse
+      tags:
+      - Warehouse
+    patch:
+      consumes:
+      - application/json
+      description: Update an existing warehouse
+      parameters:
+      - description: Warehouse ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Warehouse object
+        in: body
+        name: warehouse
+        required: true
+        schema:
+          $ref: '#/definitions/database.Warehouse'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update an existing warehouse
+      tags:
+      - Warehouse
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Позволяет залогиниться пользователю в системе
+      parameters:
+      - description: Данные для входа
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.Auth'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.User'
+      summary: Логин в системе
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Создает нового пользователя в системе
+      parameters:
+      - description: Детали о пользователе
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/database.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.authRegResp'
+      summary: Регистрация нового пользователя
+      tags:
+      - Auth
+swagger: "2.0"

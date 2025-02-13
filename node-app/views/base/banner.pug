@@ -1,0 +1,30 @@
+script(src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js")
+
+#particles-js
+section.section.hero#main_section(data-theme="light")
+    .container.is-fluid.has-text-dark
+        .level
+            .level-item.level-left
+                .notification.is-dark.has-text-white(style="background-color:rgba(0.1, 0.1, 0.1, 0.2); width: 500px")
+                    h1.subtitle.mb-5.play-regular Информация о пользователе
+                    .card.equal-height
+                        .card-content
+                            .media
+                                .media-left
+                                    figure.image.is-32x32
+                                        img.center.is-rounded(src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile.png")
+                                .media-content
+                                    p.title.is-6 #{user.firstname}
+                                    p.subtitle.is-7 @#{user.username}
+                    p #{user.firstname} #{user.lastname}
+                    p #{user.phone}
+                    p #{user.email}
+            .level-item.level-right.has-text-right
+                div
+                    h1.title.is-1.mt-2.play-bold(style='font-size: 4rem') Добро пожаловать, #{user.firstname}
+                    p.mt-3.play-regular #{banner.title || "Это панель управления заказами"}
+                    h2.is-1.play-regular #{banner.description || "Здесь можно просматривать всю информацию о конкретном заказе и конкретные маршруты следования из точки А в точку Б"}
+    script.
+        particlesJS.load('particles-js', '/static/misc/particles.json', function() {
+            console.log('callback - particles.js config loaded');
+        });

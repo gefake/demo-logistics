@@ -1,0 +1,17 @@
+POST 127.0.0.1:8080/api/delivery/
+
+{
+    "cargo_id": 4,
+    "driver_id": 1,
+    "departure_date": "2022-01-01T00:00:00Z",
+    "start_point": {
+        "lat": 12.34,
+        "lon": 56.78
+    },
+    "end_point": {
+        "lat": 90.12,
+        "lon": 34.56
+    },
+    "arrival_date": "2022-01-02T00:00:00Z",
+    "status": "Доставлен"
+}

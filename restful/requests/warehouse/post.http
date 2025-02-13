@@ -1,0 +1,9 @@
+POST 127.0.0.1:8080/api/warehouse/
+
+{
+  "address": "123 Main St",
+  "position": {
+        "lat": 90.12,
+        "lon": 34.56
+   }
+}

@@ -1,0 +1,118 @@
+extends ../_base
+
+block content
+    include ../base/navbar
+    include ../base/navbar2
+    include ../base/banner
+    script(src="https://mapgl.2gis.com/api/js/v1")
+    section.section.hero.is-fullheight(data-theme="light")
+        .container.is-fluid
+            .columns
+                .column
+                    .box
+                        table.table.is-fullwidth.is-hoverable
+                            thead
+                                tr
+                                    th Номер
+                                    th Адрес
+                                    th Товары
+                                    th Действия
+                            tbody
+                                each warehouse in warehouses
+                                    tr
+                                        td #{warehouse.id}
+                                        td #{warehouse.address}
+                                        td test
+                                        td
+                                            form(action=`/admin/warehouses/delete/${warehouse.id}` method="POST")
+                                                button.button.is-small.is-success.has-text-white(type="submit") Удалить
+                .column.is-one-third
+                    .box
+                        .notification.has-text-centered
+                            h1.title.mb-2 Новая доставка
+                            h2.subtitle.mb-5 Заполните информацию и добавьте новую доставку
+                            .control
+                                form#new_warehouse(action=`/admin/warehouses/new` method="POST")
+                                    //.field
+                                    //    select.select.is-fullwidth(name="cargo_id")
+                                    //        each product in products
+                                    //            option.option(value=product.id) Груз №#{product.id} (#{product.name})
+                                    .field
+                                        input.input#address(name="address" placeholder="Точный адрес склада")
+                                        input.input(name="address_lat")#address_lat.is-hidden
+                                        input.input(name="address_lon")#address_lon.is-hidden
+                                    .field
+                                        button.button.is-success.has-text-white.is-fullwidth(type="submit") Добавить
+
+    script.
+        // Замените на свой API-ключ
+        var token = "cf13fe0612ef6773d58986c308f2628284e3d275";
+
+        var type = "ADDRESS";
+        var $city = $("#city");
+        var $address = $("#address");
+
+        function enforceCity(suggestion) {
+            console.log(suggestion)
+            var sgt = $("#address").suggestions();
+            sgt.clear();
+            sgt.setOptions({
+                constraints: {
+                    locations: {kladr_id: suggestion.data.kladr_id}
+                },
+                restrict_value: true
+            });
+        }
+
+        function iplocate() {
+            var serviceUrl = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/iplocate/address";
+            var params = {
+                type: "GET",
+                contentType: "application/json",
+                headers: {
+                    "Authorization": "Token " + token
+                }
+            };
+            return $.ajax(serviceUrl, params);
+        }
+
+        // город и населенный пункт
+        $city.suggestions({
+            token: token,
+            type: type,
+            hint: false,
+            bounds: "city-settlement",
+            onSelect: enforceCity
+        });
+
+        function enforceAddress2(suggestion) {
+            $address.data('lat', suggestion.data.geo_lat)
+            $address.data('lon', suggestion.data.geo_lon)
+            $('#address_lat').attr('value', suggestion.data.geo_lat)
+            $('#address_lon').attr('value', suggestion.data.geo_lon)
+            $('#address_lat').val(suggestion.data.geo_lat)
+            $('#address_lon').val(suggestion.data.geo_lon)
+        }
+
+        $address.suggestions({
+            token: token,
+            type: type,
+            hint: false,
+            geoLocation: false,
+            onSelect: enforceAddress2
+        });
+
+        iplocate().done(function (response) {
+            var location = response.location;
+            $address.data('lat', location.data.geo_lat)
+            $address.data('lon', location.data.geo_lon)
+            $('#address_lat').attr('value', location.data.geo_lat)
+            $('#address_lon').attr('value', location.data.geo_lon)
+            // $address.dataset.lat = location.data.geo_lat
+            // console.log(location.data.geo_lat); // geo_lon
+            if (!location) {
+                return;
+            }
+            $city.suggestions().setSuggestion(location);
+            enforceCity(location);
+        });

@@ -1,0 +1,60 @@
+nav#navbarService.navbar.is-dark(role='navigation' aria-label='main navigation')
+  .navbar-brand
+    a#logo.navbar-item.ml-6.is-size-4.montserrat-medium.navbar-item-tall.is-hidden-mobile.play-regular(href='/')
+      span.icon
+        .fas.fa-home.mr-5
+      span СтройМастер
+    a#logo.navbar-item.ml-2.is-size-4.montserrat-medium.navbar-item-tall.is-hidden-desktop.is-hidden-tablet(href='/')
+      img.image(src='/static/images/logo.png')
+    a.navbar-burger.mr-5(role='button' aria-label='menu' aria-expanded='false' data-target='navbarServiceCenter')
+      span.is-highlevel-text(aria-hidden='true')
+      span.is-highlevel-text(aria-hidden='true')
+      span.is-highlevel-text(aria-hidden='true')
+      span.is-highlevel-text(aria-hidden='true')
+  #navbarServiceCenter.navbar-menu
+    .navbar-start
+
+    .navbar-end.mr-6
+      //- .navbar-item.has-text-white.montserrat-medium.has-text-weight-semibold
+      //-   span.icon.is-small.has-text-white
+      //-       i.fas.fa-clock
+      //-   span.ml-3.has-text-white 24/7 Круглосуточно
+      //- .navbar-item.has-text-white.montserrat-medium.has-text-weight-semibold
+      //-   span.icon.is-small.has-text-white
+      //-       i.fas.fa-city
+      //-   span.ml-3.has-text-white г. Астрахань, ул. Савушкина 43
+      .navbar-item.is-hidden-mobile
+        .buttons
+          a(href='/cart').button.is-dark.is-rounded
+            span.icon
+              .fas.fa-shopping-cart
+            span Корзина
+          if user
+            a(href='/admin').button.is-dark.is-rounded
+              span.icon
+                .fas.fa-user
+              span #{user.username}
+          else
+            a(href='/user/login').button.is-dark.is-rounded
+              span.icon
+                .fas.fa-user
+              span Войти
+
+
+script.
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check for click events on the navbar burger icon
+    document.querySelector(".navbar-burger").addEventListener("click", function() {
+      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+      this.classList.toggle("is-active");
+      document.querySelector(".navbar-menu").classList.toggle("is-active");
+    });
+    // Check for click events on the submenu links
+    document.querySelectorAll("a.navbar-submenu-link").forEach(function(link) {
+      link.addEventListener("click", function(e) { 
+        e.preventDefault();
+        // Toggle "open" class on the target submenu
+        document.querySelector(`#${this.getAttribute("data-target")}`).classList.toggle("open")
+      })
+    });
+  });

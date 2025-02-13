@@ -1,0 +1,7 @@
+POST 127.0.0.1:8080/api/order/products
+
+{
+  "order_id": 5,
+  "product_id": 4,
+  "quantity": 15
+}

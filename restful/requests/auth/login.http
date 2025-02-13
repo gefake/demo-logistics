@@ -1,0 +1,6 @@
+POST 127.0.0.1:8080/auth/login/
+
+{
+    "login": "user",
+    "password": "test"
+}

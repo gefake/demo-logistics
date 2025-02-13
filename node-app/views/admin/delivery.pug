@@ -1,0 +1,199 @@
+extends ../_base
+
+block content
+    include ../base/navbar
+    include ../base/navbar2
+    include ../base/banner
+    script(src="https://mapgl.2gis.com/api/js/v1")
+    section.section.hero.is-fullheight(data-theme="light")
+        .container.is-fluid
+            .columns
+                .column
+                    .box
+                        table.table.is-fullwidth.is-hoverable
+                            thead
+                                tr
+                                    th ID
+                                    th Водитель
+                                    th Время отправки
+                                    th Время доставки
+                                    th Статус
+                                    th Действия
+                                    th Груз
+                            tbody
+                                each delivery in deliveries
+                                    tr
+                                        td Доставка №#{delivery.id}
+                                        td #{delivery.Driver.firstname} #{delivery.Driver.lastname}
+                                        td #{delivery.departure_date}
+                                        td #{delivery.arrival_date}
+                                        td #{delivery.status}
+                                        td
+                                            form(action=`/admin/delivery/delete/${delivery.id}` method="POST")
+                                                button.button.is-small.is-success.has-text-white(type="submit") Удалить
+                                        td
+                                            a.button.tag.is-dark(href="/admin/cargos") Груз #{delivery.Cargo.name}
+                .column.is-one-third
+                    .box
+                        .notification.has-text-centered
+                            h1.title.mb-2 Новая доставка
+                            h2.subtitle.mb-5 Заполните информацию и добавьте новую доставку
+                            .control
+                                form#new_delivery(action=`/admin/delivery/new` method="POST")
+                                    .field
+                                        select.select.is-fullwidth(name="cargo_id")
+                                            each cargo in cargos.cargos
+                                                option.option(value=cargo.id) Груз №#{cargo.id} (#{cargo.weight} кг.)
+                                    .field
+                                        input.input(name="status" placeholder="Статус доставки")
+                                    .field
+                                        input.input#address(name="start_point" placeholder="Точный адрес отправления")
+                                        input.input(name="address_lat")#address_lat.is-hidden
+                                        input.input(name="address_lon")#address_lon.is-hidden
+                                    .field
+                                        input.input#address2(name="end_point" placeholder="Точный адрес доставки")
+                                        input.input(name="address2_lat")#address2_lat.is-hidden
+                                        input.input(name="address2_lon")#address2_lon.is-hidden
+                                    .field
+                                        button.button.is-success.has-text-white.is-fullwidth(type="submit") Добавить
+
+    script.
+        // Замените на свой API-ключ
+        var token = "cf13fe0612ef6773d58986c308f2628284e3d275";
+
+        var type = "ADDRESS";
+        var $city = $("#city");
+        var $address = $("#address");
+
+        function enforceCity(suggestion) {
+            console.log(suggestion)
+            var sgt = $("#address").suggestions();
+            sgt.clear();
+            sgt.setOptions({
+                constraints: {
+                    locations: {kladr_id: suggestion.data.kladr_id}
+                },
+                restrict_value: true
+            });
+        }
+
+        function iplocate() {
+            var serviceUrl = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/iplocate/address";
+            var params = {
+                type: "GET",
+                contentType: "application/json",
+                headers: {
+                    "Authorization": "Token " + token
+                }
+            };
+            return $.ajax(serviceUrl, params);
+        }
+
+        // город и населенный пункт
+        $city.suggestions({
+            token: token,
+            type: type,
+            hint: false,
+            bounds: "city-settlement",
+            onSelect: enforceCity
+        });
+
+        function enforceAddress2(suggestion) {
+            $address.data('lat', suggestion.data.geo_lat)
+            $address.data('lon', suggestion.data.geo_lon)
+            $('#address_lat').attr('value', suggestion.data.geo_lat)
+            $('#address_lon').attr('value', suggestion.data.geo_lon)
+            $('#address_lat').val(suggestion.data.geo_lat)
+            $('#address_lon').val(suggestion.data.geo_lon)
+        }
+
+        $address.suggestions({
+            token: token,
+            type: type,
+            hint: false,
+            geoLocation: false,
+            onSelect: enforceAddress2
+        });
+
+        iplocate().done(function (response) {
+            var location = response.location;
+            $address.data('lat', location.data.geo_lat)
+            $address.data('lon', location.data.geo_lon)
+            $('#address_lat').attr('value', location.data.geo_lat)
+            $('#address_lon').attr('value', location.data.geo_lon)
+            // $address.dataset.lat = location.data.geo_lat
+            // console.log(location.data.geo_lat); // geo_lon
+            if (!location) {
+                return;
+            }
+            $city.suggestions().setSuggestion(location);
+            enforceCity(location);
+        });
+
+        // 2nd
+
+        var type = "ADDRESS";
+        var $city2 = $("#city2");
+        var $address2 = $("#address2");
+
+        function enforceCity(suggestion) {
+            var sgt = $("#address").suggestions();
+            sgt.clear();
+            sgt.setOptions({
+                constraints: {
+                    locations: {kladr_id: suggestion.data.kladr_id}
+                },
+                restrict_value: true
+            });
+        }
+
+        function iplocate() {
+            var serviceUrl = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/iplocate/address";
+            var params = {
+                type: "GET",
+                contentType: "application/json",
+                headers: {
+                    "Authorization": "Token " + token
+                }
+            };
+            return $.ajax(serviceUrl, params);
+        }
+
+        // город и населенный пункт
+        $city2.suggestions({
+            token: token,
+            type: type,
+            hint: false,
+            bounds: "city-settlement",
+            onSelect: enforceCity
+        });
+
+        function enforceAddress1(suggestion) {
+            $address2.data('lat', suggestion.data.geo_lat)
+            $address2.data('lon', suggestion.data.geo_lon)
+            $('#address2_lat').attr('value', suggestion.data.geo_lat)
+            $('#address2_lon').attr('value', suggestion.data.geo_lon)
+            $('#address2_lat').val(suggestion.data.geo_lat)
+            $('#address2_lon').val(suggestion.data.geo_lon)
+        }
+
+        $address2.suggestions({
+            token: token,
+            type: type,
+            hint: false,
+            geoLocation: false,
+            onSelect: enforceAddress1
+        });
+
+        iplocate().done(function (response) {
+            var location = response.location;
+            $address.data('lat', location.data.geo_lat)
+            $address.data('lon', location.data.geo_lon)
+            $('#address_lat2').attr('value', location.data.geo_lat)
+            $('#address_lon2').attr('value', location.data.geo_lon)
+            if (!location) {
+                return;
+            }
+            $city2.suggestions().setSuggestion(location);
+            enforceCity(location);
+        });

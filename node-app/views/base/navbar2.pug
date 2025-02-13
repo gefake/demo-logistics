@@ -1,0 +1,35 @@
+nav.navbar.is-dark(style="background-color:#21252C")
+    .navbar-start
+        .navbar-item
+            .buttons
+                a.button.is-dark(href="/admin")
+                    span.icon
+                        .fas.fa-building
+                    span Заказы
+                a.button.is-dark(href="/admin/suppliers")
+                    span.icon
+                        .fas.fa-users
+                    span Поставщики
+                a.button.is-dark(href="/admin/delivery")
+                    span.icon
+                        .fas.fa-car-side
+                    span Доставка
+                a.button.is-dark(href="/admin/warehouses")
+                    span.icon
+                        .fas.fa-car
+                    span Склады
+                a.button.is-dark(href="/admin/cargos")
+                    span.icon
+                        .fas.fa-box
+                    span Грузы
+
+script.
+    $(document).ready(function() {
+        var currentUrl = window.location.pathname;
+        console.log(currentUrl)
+        var targetElement = $('a.button[href="' + currentUrl + '"]');
+
+        if (targetElement.length > 0) {
+            targetElement.addClass('is-primary');
+    }
+    });
